@@ -1,5 +1,5 @@
-= go-sql-tracer
-== Example
+# go-sql-tracer
+## Example
 
 ```
   package main
