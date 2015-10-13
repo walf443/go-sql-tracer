@@ -7,16 +7,27 @@ import (
 	"strings"
 )
 
-type Logger struct {}
-var logger Logger
+type Logger struct {
+	output func(int, string) error
+}
+var logger *Logger
 
-func (*Logger) Output(n int, out string) (err error) {
-	log.Println(out)
+func (l *Logger) Output(n int, out string) (err error) {
+	l.output(n, out)
 	return err
 }
 
+func ChangeOutput(f func(int, string) error) {
+	logger.output = f
+}
+
 func init() {
-	logger := new(Logger)
+	logger = new(Logger)
+	logger.output = func(n int, out string) error {
+	  var err error
+	  log.Println(out)
+	  return err
+	}
 	for _, driver := range(sql.Drivers()) {
 		if strings.Contains(driver, "-trace") {
 			continue
@@ -26,3 +37,4 @@ func init() {
 		sql.Register(driver + "-trace", proxy.NewTraceProxy(db.Driver(), logger))
 	}
 }
+
