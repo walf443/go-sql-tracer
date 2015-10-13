@@ -6,6 +6,7 @@
 
   import (
     database/sql
+	"github.com/go-sql-driver/mysql" # load driver before load go-sql-tracer
     _ "github.com/walf443/go-sql-tracer"
   )
 
