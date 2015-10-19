@@ -29,12 +29,12 @@ func init() {
 	  return err
 	}
 	for _, driver := range(sql.Drivers()) {
-		if strings.Contains(driver, "-trace") {
+		if strings.Contains(driver, ":trace") {
 			continue
 		}
 		db, _ := sql.Open(driver, "")
 		defer db.Close()
-		sql.Register(driver + "-trace", proxy.NewTraceProxy(db.Driver(), logger))
+		sql.Register(driver + ":trace", proxy.NewTraceProxy(db.Driver(), logger))
 	}
 }
 
